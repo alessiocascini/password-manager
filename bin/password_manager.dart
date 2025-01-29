@@ -1,10 +1,8 @@
 import 'dart:io';
-import 'dart:math';
 import 'dart:convert';
+import 'package:password_manager/password_generator.dart';
 
 Future<void> main() async {
-  // final String password = generatePassword();
-
   try {
     File passwords = File('data/passwords.json');
 
@@ -28,71 +26,59 @@ Future<void> main() async {
     }
 
     print(map);
+
+    String service = '';
+
+    print('Enter the name of the service: ');
+    do {
+      service = stdin.readLineSync() ?? '';
+    } while (service.trim().isEmpty);
+
+    addPassword(map, service);
+
+    String updatedContent = jsonEncode(map);
+    await passwords.writeAsString(updatedContent);
   } catch (e) {
     print(e);
   }
-
-/*   try {
-    File passwords = await File('data/passwords.txt').create(recursive: true);
-    await passwords.writeAsString('Hello, World!\n', mode: FileMode.append);
-    List<String> lines = await passwords.readAsLines();
-    print(lines);
-  } catch (e) {
-    print(e);
-  } */
 }
 
-String generatePassword() {
-  const String upperCase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  const String lowerCase = 'abcdefghijklmnopqrstuvwxyz';
-  const String numbers = '0123456789';
-  const String specialCharacters = '!"#\$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
+void addPassword(Map<String, dynamic> map, String service) {
+  String answer = '';
 
-  String characters = upperCase + lowerCase + numbers + specialCharacters;
-  characters = characters.replaceAll(RegExp(r'[l1o0]'), '');
+  if (map.containsKey(service)) {
+    print('This service already exists.');
+    print(' Do you want to update the password? (y/n)');
 
-  int length = 0;
+    do {
+      answer = stdin.readLineSync()?.toLowerCase() ?? '';
+    } while (answer != 'y' && answer != 'n');
 
-  while (true) {
-    try {
-      print('Enter the length of the password: ');
-      String? input = stdin.readLineSync();
-
-      if (input?.trim().isEmpty ?? true) {
-        throw ArgumentError('The length of the password cannot be empty.');
-      }
-
-      if (int.tryParse(input!) == null) {
-        throw FormatException('The length of the password must be a number.');
-      } else {
-        length = int.parse(input);
-      }
-
-      if (length < 8 || length > 128) {
-        throw RangeError(
-            'The length of the password must be between 8 and 128.');
-      }
-
-      break;
-    } catch (e) {
-      print(e);
-    }
+    if (answer == 'n') return;
   }
 
-  String password;
-  final Random random = Random();
+  String option = '';
+
+  print('1. Generate a new password');
+  print('2. Use an existing password');
 
   do {
-    password = '';
-    for (int i = 0; i < length; i++) {
-      password += characters[random.nextInt(characters.length)];
-    }
-  } while (!(password.contains(RegExp('[$upperCase]')) &&
-      password.contains(RegExp('[$lowerCase]')) &&
-      password.contains(RegExp('[$numbers]')) &&
-      password.contains(RegExp('[$specialCharacters]'))));
+    option = stdin.readLineSync() ?? '';
+  } while (option != '1' && option != '2');
 
-  print('Password: $password');
+  String password = '';
 
-  return password;
+  switch (option) {
+    case '1':
+      password = generatePassword();
+      break;
+    case '2':
+      print('Enter the password: ');
+      do {
+        password = stdin.readLineSync() ?? '';
+      } while (password.trim().isEmpty);
+      break;
+  }
+
+  map[service] = password;
 }
