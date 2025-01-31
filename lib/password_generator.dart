@@ -12,7 +12,7 @@ String generatePassword() {
 
   int length = 0;
 
-  while (true) {
+  do {
     try {
       print('Enter the length of the password: ');
       String input = stdin.readLineSync() ?? '';
@@ -28,15 +28,14 @@ String generatePassword() {
       }
 
       if (length < 8 || length > 128) {
-        throw RangeError(
-            'The length of the password must be between 8 and 128.');
+        print('The length of the password must be between 8 and 128.');
       }
 
       break;
     } catch (e) {
       print(e);
     }
-  }
+  } while (length < 8 || length > 128);
 
   String password;
   final Random random = Random();
