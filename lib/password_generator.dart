@@ -1,56 +1,85 @@
 import 'dart:io';
 import 'dart:math';
 
-String generatePassword() {
-  const String upperCase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  const String lowerCase = 'abcdefghijklmnopqrstuvwxyz';
-  const String numbers = '0123456789';
-  const String specialCharacters = '!"#\$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
+/// A class to generate secure random passwords.
+class PasswordGenerator {
+  // Constants representing different character sets for password generation.
+  static const String _upperCase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  static const String _lowerCase =
+      'abcdefghijkmnpqrstuvwxyz'; // Excludes 'l' and 'o' to avoid confusion.
+  static const String _numbers =
+      '23456789'; // Excludes '0' and '1' to avoid confusion.
+  static const String _specialCharacters =
+      '!"#\$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
 
-  String characters = upperCase + lowerCase + numbers + specialCharacters;
-  characters = characters.replaceAll(RegExp(r'[l1o0]'), '');
+  // All possible characters that can be used in the password.
+  static const String _characters =
+      _upperCase + _lowerCase + _numbers + _specialCharacters;
 
-  int length = 0;
+  // The generated password.
+  String password = '';
 
-  do {
-    try {
+  /// Constructor that generates a password with a length based on user input.
+  PasswordGenerator() {
+    final int length = _getLength();
+    password = _generatePassword(length);
+    print('Password: $password');
+  }
+
+  /// Prompts the user to input a password length between 8 and 128.
+  /// Returns the length as an integer.
+  int _getLength() {
+    while (true) {
       print('Enter the length of the password: ');
-      String input = stdin.readLineSync() ?? '';
+      final String input = stdin.readLineSync() ?? '';
 
+      // Ensures the input is not empty.
       if (input.trim().isEmpty) {
-        throw ArgumentError('The length of the password cannot be empty.');
+        print('The length must not be empty.');
+        continue;
       }
 
-      if (int.tryParse(input) == null) {
-        throw FormatException('The length of the password must be a number.');
+      // Tries to parse the input as an integer.
+      final int? length = int.tryParse(input);
+
+      // Validates that the length is an integer and within the acceptable range.
+      if (length == null) {
+        print('The length must be an integer.');
+      } else if (length < 8 || length > 128) {
+        print('The length must be between 8 and 128.');
       } else {
-        length = int.parse(input);
+        return length;
       }
-
-      if (length < 8 || length > 128) {
-        print('The length of the password must be between 8 and 128.');
-      }
-
-      break;
-    } catch (e) {
-      print(e);
     }
-  } while (length < 8 || length > 128);
+  }
 
-  String password;
-  final Random random = Random();
+  /// Generates a random password of the specified length.
+  /// The password will contain at least one uppercase letter, one lowercase letter,
+  /// one number, and one special character.
+  ///
+  /// [length]: The desired length of the generated password.
+  /// Returns a string containing the generated password.
+  String _generatePassword(int length) {
+    final Random random = Random.secure();
+    final List<String> password = [];
 
-  do {
-    password = '';
-    for (int i = 0; i < length; i++) {
-      password += characters[random.nextInt(characters.length)];
+    // Helper function to get a random character from a given set of characters.
+    String getRandomCharacter(String characters) =>
+        characters[random.nextInt(characters.length)];
+
+    // Ensure the password contains at least one character from each category.
+    password.add(getRandomCharacter(_upperCase));
+    password.add(getRandomCharacter(_lowerCase));
+    password.add(getRandomCharacter(_numbers));
+    password.add(getRandomCharacter(_specialCharacters));
+
+    // Fill the rest of the password with random characters from all categories.
+    for (int i = password.length; i < length; i++) {
+      password.add(getRandomCharacter(_characters));
     }
-  } while (!(password.contains(RegExp('[$upperCase]')) &&
-      password.contains(RegExp('[$lowerCase]')) &&
-      password.contains(RegExp('[$numbers]')) &&
-      password.contains(RegExp('[$specialCharacters]'))));
 
-  print('Password: $password');
-
-  return password;
+    // Shuffle the characters to randomize the order.
+    password.shuffle(random);
+    return password.join('');
+  }
 }

@@ -2,38 +2,20 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'package:crypto/crypto.dart';
+import 'package:encrypt/encrypt.dart';
+import 'package:pointycastle/export.dart';
 import 'package:password_manager/password_generator.dart';
+import 'package:password_manager/json_reader.dart';
 
 Future<void> main() async {
-  final File master = File('data/master.json');
-  Map<String, dynamic> map = await readFile(master);
+  final File passwords = File('data/passwords.json');
+  Map<String, dynamic> map = await readJSONFile(passwords);
 
-  if (map.isEmpty) {
-    final Random random = Random.secure();
-    final List<int> saltBytes =
-        List<int>.generate(16, (_) => random.nextInt(256));
-    final String salt = base64.encode(saltBytes);
-
-    print('Salt: $salt');
-
-    String password;
-
-    print('Enter the master password: ');
-    do {
-      password = stdin.readLineSync() ?? '';
-    } while (password.trim().isEmpty);
-
-    final bytes = utf8.encode(password + salt);
-    final Digest digest = sha256.convert(bytes);
-
-    print('Digest as bytes: ${digest.bytes}');
-    print('Digest as hex string: $digest');
-
-    map['salt'] = salt;
-    map['master'] = digest.toString();
-
-    String updatedContent = jsonEncode(map);
-    await master.writeAsString(updatedContent);
+  try {
+    await createMasterPassword(passwords, map);
+  } catch (e) {
+    print('Error creating the master password: $e');
+    return;
   }
 
   String masterPassword = '';
@@ -43,7 +25,7 @@ Future<void> main() async {
   } while (masterPassword.trim().isEmpty);
 
   final bytes = utf8.encode(masterPassword + map['salt']);
-  final Digest digest = sha256.convert(bytes);
+  final digest = sha256.convert(bytes);
 
   if (digest.toString() == map['master']) {
     print('Access granted.');
@@ -57,11 +39,15 @@ Future<void> main() async {
       option = stdin.readLineSync() ?? '';
     } while (option != '1' && option != '2');
 
+    final PBKDF2KeyDerivator pbkdf2 =
+        PBKDF2KeyDerivator(HMac(SHA256Digest(), 64))
+          ..init(Pbkdf2Parameters(base64.decode(map['salt']), 100000, 32));
+    final key = pbkdf2.process(utf8.encode(masterPassword));
+
+    final Encrypter encrypter = Encrypter(AES(Key(key), mode: AESMode.cbc));
+
     switch (option) {
       case '1':
-        final File passwords = File('data/passwords.json');
-        Map<String, dynamic> map = await readFile(passwords);
-
         String service = '';
 
         print('Enter the name of the service: ');
@@ -69,7 +55,7 @@ Future<void> main() async {
           service = stdin.readLineSync() ?? '';
         } while (service.trim().isEmpty);
 
-        addPassword(map, service);
+        addPassword(map['passwords'], service, encrypter);
 
         String updatedContent = jsonEncode(map);
         await passwords.writeAsString(updatedContent);
@@ -77,9 +63,6 @@ Future<void> main() async {
         break;
 
       case '2':
-        final File passwords = File('data/passwords.json');
-        Map<String, dynamic> map = await readFile(passwords);
-
         String service = '';
 
         print('Enter the name of the service: ');
@@ -87,8 +70,9 @@ Future<void> main() async {
           service = stdin.readLineSync() ?? '';
         } while (service.trim().isEmpty);
 
-        if (map.containsKey(service)) {
-          print('Password: ${map[service]}');
+        if (map['passwords'].containsKey(service)) {
+          print(
+              'Password: ${encrypter.decrypt(Encrypted.fromBase64(map['passwords'][service]['password']), iv: IV.fromBase64(map['passwords'][service]['iv']))}');
         } else {
           print('Service not found.');
         }
@@ -100,35 +84,7 @@ Future<void> main() async {
   }
 }
 
-Future<Map<String, dynamic>> readFile(final File file) async {
-  try {
-    if (!await file.exists()) {
-      print('File not found. Creating a new file...');
-      await file.create(recursive: true);
-      await file.writeAsString('{}');
-    }
-
-    String lines = await file.readAsString();
-    if (lines.isEmpty) {
-      print('File is empty. Writing default content...');
-      await file.writeAsString('{}');
-    }
-
-    var map = jsonDecode(lines);
-
-    if (map is! Map<String, dynamic>) {
-      throw FormatException('The content of the file is not a map.');
-    }
-
-    return map;
-  } catch (e) {
-    print('Error reading the file: $e');
-    await file.writeAsString('{}');
-    return {};
-  }
-}
-
-void addPassword(Map<String, dynamic> map, String service) {
+void addPassword(Map map, String service, Encrypter encrypter) {
   String answer = '';
 
   if (map.containsKey(service)) {
@@ -155,7 +111,7 @@ void addPassword(Map<String, dynamic> map, String service) {
 
   switch (option) {
     case '1':
-      password = generatePassword();
+      password = PasswordGenerator().password;
       break;
     case '2':
       print('Enter the password: ');
@@ -165,5 +121,52 @@ void addPassword(Map<String, dynamic> map, String service) {
       break;
   }
 
-  map[service] = password;
+  final IV iv = IV.fromSecureRandom(16);
+
+  map[service] = {
+    'iv': iv.base64,
+    'password': encrypter.encrypt(password, iv: iv).base64
+  };
+}
+
+Future<void> createMasterPassword(
+    File passwords, Map<String, dynamic> map) async {
+  if (map.isEmpty) {
+    final Random random = Random.secure();
+    final List<int> saltBytes =
+        List<int>.generate(16, (_) => random.nextInt(256));
+    final String salt = base64.encode(saltBytes);
+
+    print('Salt: $salt');
+
+    String password;
+
+    print('Enter the master password: ');
+    do {
+      password = stdin.readLineSync() ?? '';
+    } while (password.trim().isEmpty);
+
+    final bytes = utf8.encode(password + salt);
+    final digest = sha256.convert(bytes);
+
+    print('Digest as bytes: ${digest.bytes}');
+    print('Digest as hex string: $digest');
+
+    map['salt'] = salt;
+    map['master'] = digest.toString();
+    map['passwords'] = {};
+
+    String updatedContent = jsonEncode(map);
+    await passwords.writeAsString(updatedContent);
+  } else {
+    if (!map.containsKey('salt') ||
+        !map.containsKey('master') ||
+        !map.containsKey('passwords')) {
+      throw FormatException('The content of the file is not valid.');
+    }
+
+    if (map['passwords'] is! Map<String, dynamic>) {
+      throw FormatException('The content of the file is not a map.');
+    }
+  }
 }
