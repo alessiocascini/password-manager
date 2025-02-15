@@ -18,8 +18,8 @@ Future<Map<String, dynamic>> readJSONFile(final File file) async {
   // Read the content of the file as a string.
   String lines = await file.readAsString();
 
-  // If the content is empty or not a valid JSON object, return an empty map.
-  if (lines.isEmpty || jsonDecode(lines) is! Map<String, dynamic>) {
+  // If the content is empty (including whitespace-only strings) or not a valid JSON object, return an empty map.
+  if (lines.trim().isEmpty || jsonDecode(lines) is! Map<String, dynamic>) {
     return {};
   }
 

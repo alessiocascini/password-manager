@@ -16,8 +16,8 @@ class PasswordGenerator {
   static const String _characters =
       _upperCase + _lowerCase + _numbers + _specialCharacters;
 
-  // The generated password.
-  String password = '';
+  // The generated password, initialized later. 'late' ensures the value will be assigned before usage.
+  late final String password;
 
   /// Constructor that generates a password with a length based on user input.
   PasswordGenerator() {
@@ -59,7 +59,7 @@ class PasswordGenerator {
   ///
   /// [length]: The desired length of the generated password.
   /// Returns a string containing the generated password.
-  String _generatePassword(int length) {
+  String _generatePassword(final int length) {
     final Random random = Random.secure();
     final List<String> password = [];
 
