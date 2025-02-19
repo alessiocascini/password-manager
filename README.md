@@ -14,7 +14,11 @@ This project is a command-line password manager developed in Dart, designed to s
 
 ## Requirements
 
-- **Dart SDK**: Ensure that the Dart SDK is installed on your system. You can download it from the [official Dart website](https://dart.dev/get-dart).
+To run this project, you need to have the following installed:
+
+- Dart SDK version 3.6.1 or higher
+
+You can install Dart from the official website: [Dart SDK](https://dart.dev/get-dart)
 
 ## Installation
 
@@ -27,7 +31,7 @@ This project is a command-line password manager developed in Dart, designed to s
 2. **Navigate to the Project Directory**:
 
    ```bash
-   cd password_manager
+   cd password-manager
    ```
 
 3. **Install Dependencies**:
