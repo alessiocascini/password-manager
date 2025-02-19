@@ -31,7 +31,7 @@ class PasswordGenerator {
   int _getLength() {
     while (true) {
       print('Enter the length of the password: ');
-      final String input = stdin.readLineSync() ?? '';
+      final String input = stdin.readLineSync()?.trim() ?? '';
 
       // Ensures the input is not empty.
       if (input.trim().isEmpty) {
