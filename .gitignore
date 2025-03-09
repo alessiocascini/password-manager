@@ -24,11 +24,4 @@ doc/api/
 *.js.map
 
 .flutter-plugins
-<<<<<<< HEAD
 .flutter-plugins-dependencies
-=======
-.flutter-plugins-dependencies
->>>>>>> 60cd1bd442d4aa798f0f508f84eec71774444bb1
-
-# NOT GENERATED
-data/
