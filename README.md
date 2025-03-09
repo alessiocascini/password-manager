@@ -76,7 +76,7 @@ If you prefer to use Docker, follow these steps:
 2. **Run the Container**:
 
    ```bash
-   docker run --rm -it password-manager
+   docker run -it --rm password-manager
    ```
 
 These commands will build and run the application in a Docker container, providing an isolated and consistent environment.
