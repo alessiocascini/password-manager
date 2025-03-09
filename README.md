@@ -11,14 +11,15 @@ This project is a command-line password manager developed in Dart, designed to s
 - **Password Generation**: Generates strong, random passwords for new accounts.
 - **Data Storage**: Saves encrypted passwords in a JSON file for easy retrieval.
 - **Command-Line Interface**: Provides a user-friendly CLI for adding and retrieving passwords.
+- **Docker Integration**: Now supports containerized deployment for easier setup and consistency across environments.
 
 ## Requirements
 
 To run this project, you need to have the following installed:
 
-- Dart SDK version 3.6.1 or higher
-
-You can install Dart from the official website: [Dart SDK](https://dart.dev/get-dart)
+- Dart SDK version 3.7.1 or higher  
+  (You can install Dart from the official website: [Dart SDK](https://dart.dev/get-dart))
+- Docker (for containerized deployment)
 
 ## Installation
 
@@ -34,13 +35,15 @@ You can install Dart from the official website: [Dart SDK](https://dart.dev/get-
    cd password-manager
    ```
 
-3. **Install Dependencies**:
+3. **Install Dependencies** (if running locally):
 
    ```bash
    dart pub get
    ```
 
 ## Usage
+
+### Running Locally
 
 1. **Run the Application**:
 
@@ -59,6 +62,35 @@ You can install Dart from the official website: [Dart SDK](https://dart.dev/get-
    - Select option `2` to retrieve a password.
    - Enter the name of the service.
    - If the service exists, the encrypted password will be displayed.
+
+### Running with Docker
+
+If you prefer to use Docker, follow these steps:
+
+1. **Build the Docker Image**:
+
+   ```bash
+   docker build -t password-manager .
+   ```
+
+2. **Run the Container**:
+
+   ```bash
+   docker run --rm -it password-manager
+   ```
+
+These commands will build and run the application in a Docker container, providing an isolated and consistent environment.
+
+## Docker Hub
+
+The Docker image for this project is available on Docker Hub. You can pull and run it with the following commands:
+
+```bash
+docker push alessiocascini/password-manager:1.1.0
+docker run -it --rm alessiocascini/password-manager:1.1.0 bash
+```
+
+For more details, visit [Docker Hub Repository](https://hub.docker.com/repository/docker/alessiocascini/password-manager).
 
 ## License
 

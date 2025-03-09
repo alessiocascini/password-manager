@@ -1,6 +1,6 @@
 name: password_manager
-description: A simple yet secure password manager built in Dart, featuring master password authentication and encrypted password storage.
-version: 1.0.0
+description: Secure Dart password manager with master auth & encrypted storage.
+version: 1.1.0
 repository: https://github.com/alessiocascini/password-manager.git
 
 environment:
