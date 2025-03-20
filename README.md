@@ -2,16 +2,16 @@
 
 ## Overview
 
-This project is a command-line password manager developed in Dart, designed to securely store and manage your passwords. It utilizes modern cryptographic techniques to ensure the safety of your sensitive information.
+This command-line password manager, built in Dart, offers a secure and efficient solution for storing and managing your passwords. By leveraging modern cryptographic techniques, it ensures your sensitive data remains protected.
 
 ## Features
 
-- **Master Password Authentication**: Secures access to your password vault using a master password.
-- **Password Encryption**: Employs AES-CBC encryption with a secure initialization vector (IV) to protect stored passwords.
-- **Password Generation**: Generates strong, random passwords for new accounts.
-- **Data Storage**: Saves encrypted passwords in a JSON file for easy retrieval.
-- **Command-Line Interface**: Provides a user-friendly CLI for adding and retrieving passwords.
-- **Docker Integration**: Now supports containerized deployment for easier setup and consistency across environments.
+- **Master Password Authentication**: Restricts access to your password vault using a master password.
+- **Password Encryption**: Utilizes AES-CBC encryption with a secure initialization vector (IV) to safeguard stored passwords.
+- **Password Generation**: Creates strong, random passwords for new accounts.
+- **Data Storage**: Stores encrypted passwords in a JSON file for convenient retrieval.
+- **Command-Line Interface**: Provides an intuitive CLI for adding and retrieving passwords.
+- **Docker Integration**: Supports containerized deployment for simplified setup and consistent environments.
 
 ## Requirements
 
@@ -76,7 +76,7 @@ If you prefer to use Docker, follow these steps:
 2. **Run the Container**:
 
    ```bash
-   docker run -it --rm password-manager
+   docker run -it --rm password-manager bash
    ```
 
 These commands will build and run the application in a Docker container, providing an isolated and consistent environment.
@@ -94,8 +94,10 @@ For more details, visit [Docker Hub Repository](https://hub.docker.com/repositor
 
 ## License
 
-This program is free software: you can redistribute it and/or modify it under the terms of the **GNU General Public License** as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+This file is part of Password Manager.
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the [GNU General Public License](http://www.gnu.org/licenses/) for more details.
+Password Manager is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
-A copy of the GNU General Public License is included in the `LICENSE` file of this repository.
+Password Manager is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with Password Manager. If not, see <https://www.gnu.org/licenses/>.
