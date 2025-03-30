@@ -23,17 +23,6 @@ Before running the project, ensure you have the following installed on your syst
 - **Docker**  
   Required for containerized deployment, which simplifies running the application across different environments.
 
-## Docker Hub
-
-The official Docker image for this project is available on Docker Hub. You can pull and run it with the following commands:
-
-```bash
-docker pull alessiocascini/password-manager:1.1.0
-docker run -it --rm alessiocascini/password-manager:1.1.0 bash
-```
-
-For more details, visit the [Docker Hub Repository](https://hub.docker.com/repository/docker/alessiocascini/password-manager).
-
 ## Installation
 
 ### Running with Docker
