@@ -2,16 +2,16 @@
 
 ## Overview
 
-Experience a lightweight, command-line password manager built in Dart that puts security and simplicity at the forefront. This tool leverages cutting-edge cryptographic techniques to ensure your sensitive data stays protected while providing an intuitive interface for managing your passwords.
+Experience a lightweight, command-line password manager built in Dart that prioritizes security and simplicity. Leveraging state-of-the-art cryptographic techniques, this tool safeguards your sensitive data while offering an intuitive interface for password management – all delivered through a fully containerized solution.
 
 ## Key Features
 
-- **Master Password Protection**: Secure your entire vault with a single, robust master password.
-- **Advanced Encryption**: Encrypts your passwords using AES-CBC with a secure initialization vector (IV), keeping your data safe.
-- **Secure Password Generation**: Automatically generates strong, random passwords for all your accounts.
-- **Effortless Data Management**: Stores your encrypted passwords in a JSON file for quick and easy retrieval.
-- **Intuitive Command-Line Interface**: Navigate and manage your passwords with a user-friendly CLI.
-- **Seamless Docker Integration**: Deploy the application in a containerized environment for consistent setups and streamlined operations.
+- **Master Password Protection**: Secure your entire vault with a robust master password.
+- **Advanced Encryption**: Uses AES-CBC with a secure initialization vector (IV) to protect your data.
+- **Secure Password Generation**: Automatically generates strong, random passwords.
+- **Effortless Data Management**: Stores encrypted passwords in a JSON file for easy retrieval.
+- **User-Friendly CLI**: Manage your passwords with a clear and intuitive command-line interface.
+- **Containerized Deployment**: Run the application in an isolated, consistent Docker environment.
 
 ## Prerequisites
 
@@ -90,15 +90,15 @@ To run the application on your local machine without Docker:
 
 Once the application is running, you can manage your passwords using the command-line interface.
 
-1. **Add a New Password**:
+1. **Add a New Password**
 
    - Select option `1` to add a password.
-   - Enter the name of the service.
+   - Enter the service name.
    - Choose to generate a new password or provide an existing one.
 
-2. **Retrieve an Existing Password**:
+2. **Retrieve an Existing Password**
    - Select option `2` to retrieve a password.
-   - Enter the name of the service.
+   - Enter the service name.
    - If found, the encrypted password will be displayed.
 
 ## License
