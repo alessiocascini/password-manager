@@ -36,13 +36,44 @@ For more details, visit the [Docker Hub Repository](https://hub.docker.com/repos
 
 ## Installation
 
+### Running with Docker
+
+The official Docker image for this project is available on Docker Hub. It is recommended to download and run it using the following commands:
+
+```bash
+docker pull alessiocascini/password-manager:1.1.0
+docker run -it --name password-manager alessiocascini/password-manager:1.1.0
+```
+
+This will create and start a container named `password-manager`. Once the container is created, you can restart it anytime without losing data using:
+
+```bash
+docker start -i password-manager
+```
+
+When you are done and want to remove the container:
+
+```bash
+docker rm password-manager
+```
+
+If you prefer to build the Docker image manually, you can do so with:
+
+```bash
+docker build -t password-manager .
+```
+
+Then, run the container with:
+
+```bash
+docker run -it --name password-manager password-manager
+```
+
 ### Running Locally
 
-To run the application on your local machine:
+To run the application on your local machine without Docker:
 
 1. **Clone the Repository**:
-
-   Begin by cloning the repository to your local system:
 
    ```bash
    git clone https://github.com/alessiocascini/password-manager.git
@@ -50,15 +81,11 @@ To run the application on your local machine:
 
 2. **Navigate to the Project Directory**:
 
-   Move into the project's root directory:
-
    ```bash
    cd password-manager
    ```
 
 3. **Install Dependencies**:
-
-   Fetch and install the necessary dependencies:
 
    ```bash
    dart pub get
@@ -66,43 +93,9 @@ To run the application on your local machine:
 
 4. **Run the Application**:
 
-   Launch the application:
-
    ```bash
    dart run
    ```
-
-### Running with Docker
-
-To run the application using Docker, follow these steps:
-
-1. **Build the Docker Image**:
-
-   Create the Docker image from the Dockerfile:
-
-   ```bash
-   docker build -t password-manager .
-   ```
-
-2. **Run the Docker Container**:
-
-   Start the application within a Docker container:
-
-   ```bash
-   docker run -it --rm password-manager bash
-   ```
-
-Once inside the Docker container, follow the same steps as for local execution:
-
-3. **Run the Application in Docker**:
-
-   Inside the container, execute the application using:
-
-   ```bash
-   dart run
-   ```
-
-This allows you to run the Password Manager both locally and in a Docker container.
 
 ## Usage
 
