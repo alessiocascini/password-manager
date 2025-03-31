@@ -1,9 +1,13 @@
-# Ignore Git version control files and directories
-.git/           # Exclude the entire Git repository folder
-.gitignore      # Exclude the .gitignore file itself (optional)
+# Ignore Git-related files and directories
+.git/           # Exclude the entire Git repository
+.gitignore      # Ignore the Git ignore rules file (optional)
 
-# Ignore files that are not needed in the Docker build context
-Dockerfile      # Typically not needed inside the final image
+# Ignore documentation and metadata files
 README.md       # Project documentation
 CHANGELOG.md    # Changelog for the project
 LICENSE         # License information
+TODO.md         # Development tasks and notes
+
+# Ignore build-related files
+Dockerfile      # Not needed inside the final image
+.dockerignore   # This file itself
