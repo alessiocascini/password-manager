@@ -6,17 +6,20 @@ import 'package:serverpod/serverpod.dart';
 /// The password will contain at least one uppercase letter, one lowercase letter,
 /// one number, and one special character.
 class PasswordGeneratorEndpoint extends Endpoint {
-  /// [length]: The desired length of the generated password.
-  /// Returns a string containing the generated password.
-  Future<String> generatePassword(Session session, final int length) async {
-    // All possible characters that can be used in the password.
-    const List<String> characters = [
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-      'abcdefghijkmnpqrstuvwxyz', // Excludes 'l' and 'o' to avoid confusion.
-      '23456789', // Excludes '0' and '1' to avoid confusion.
-      '!"#\$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
-    ];
+  // All possible characters that can be used in the password.
+  static const List<String> characters = [
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    'abcdefghijkmnpqrstuvwxyz', // Excludes 'l' and 'o' to avoid confusion.
+    '23456789', // Excludes '0' and '1' to avoid confusion.
+    '!"#\$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
+  ];
 
+  /// Returns a string containing the generated password.
+  /// [length]: The desired length of the generated password.
+  Future<String> generatePassword(
+    Session session, {
+    required final int length,
+  }) async {
     final Random random = Random.secure();
     final List<String> password = [];
 
