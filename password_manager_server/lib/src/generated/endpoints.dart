@@ -10,8 +10,43 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
+import '../endpoints/password_generator.dart' as _i2;
 
 class Endpoints extends _i1.EndpointDispatch {
   @override
-  void initializeEndpoints(_i1.Server server) {}
+  void initializeEndpoints(_i1.Server server) {
+    var endpoints = <String, _i1.Endpoint>{
+      'passwordGenerator': _i2.PasswordGeneratorEndpoint()
+        ..initialize(
+          server,
+          'passwordGenerator',
+          null,
+        )
+    };
+    connectors['passwordGenerator'] = _i1.EndpointConnector(
+      name: 'passwordGenerator',
+      endpoint: endpoints['passwordGenerator']!,
+      methodConnectors: {
+        'generatePassword': _i1.MethodConnector(
+          name: 'generatePassword',
+          params: {
+            'length': _i1.ParameterDescription(
+              name: 'length',
+              type: _i1.getType<int>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['passwordGenerator'] as _i2.PasswordGeneratorEndpoint)
+                  .generatePassword(
+            session,
+            params['length'],
+          ),
+        )
+      },
+    );
+  }
 }

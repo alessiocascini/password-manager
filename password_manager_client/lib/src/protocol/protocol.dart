@@ -10,6 +10,10 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
+import 'password.dart' as _i2;
+import 'user.dart' as _i3;
+export 'password.dart';
+export 'user.dart';
 export 'client.dart';
 
 class Protocol extends _i1.SerializationManager {
@@ -25,6 +29,18 @@ class Protocol extends _i1.SerializationManager {
     Type? t,
   ]) {
     t ??= T;
+    if (t == _i2.Password) {
+      return _i2.Password.fromJson(data) as T;
+    }
+    if (t == _i3.User) {
+      return _i3.User.fromJson(data) as T;
+    }
+    if (t == _i1.getType<_i2.Password?>()) {
+      return (data != null ? _i2.Password.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i3.User?>()) {
+      return (data != null ? _i3.User.fromJson(data) : null) as T;
+    }
     return super.deserialize<T>(data, t);
   }
 
@@ -32,6 +48,12 @@ class Protocol extends _i1.SerializationManager {
   String? getClassNameForObject(Object? data) {
     String? className = super.getClassNameForObject(data);
     if (className != null) return className;
+    if (data is _i2.Password) {
+      return 'Password';
+    }
+    if (data is _i3.User) {
+      return 'User';
+    }
     return null;
   }
 
@@ -40,6 +62,12 @@ class Protocol extends _i1.SerializationManager {
     var dataClassName = data['className'];
     if (dataClassName is! String) {
       return super.deserializeByClassName(data);
+    }
+    if (dataClassName == 'Password') {
+      return deserialize<_i2.Password>(data['data']);
+    }
+    if (dataClassName == 'User') {
+      return deserialize<_i3.User>(data['data']);
     }
     return super.deserializeByClassName(data);
   }

@@ -11,6 +11,10 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 import 'package:serverpod/protocol.dart' as _i2;
+import 'password.dart' as _i3;
+import 'user.dart' as _i4;
+export 'password.dart';
+export 'user.dart';
 
 class Protocol extends _i1.SerializationManagerServer {
   Protocol._();
@@ -29,6 +33,18 @@ class Protocol extends _i1.SerializationManagerServer {
     Type? t,
   ]) {
     t ??= T;
+    if (t == _i3.Password) {
+      return _i3.Password.fromJson(data) as T;
+    }
+    if (t == _i4.User) {
+      return _i4.User.fromJson(data) as T;
+    }
+    if (t == _i1.getType<_i3.Password?>()) {
+      return (data != null ? _i3.Password.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i4.User?>()) {
+      return (data != null ? _i4.User.fromJson(data) : null) as T;
+    }
     try {
       return _i2.Protocol().deserialize<T>(data, t);
     } on _i1.DeserializationTypeNotFoundException catch (_) {}
@@ -39,6 +55,12 @@ class Protocol extends _i1.SerializationManagerServer {
   String? getClassNameForObject(Object? data) {
     String? className = super.getClassNameForObject(data);
     if (className != null) return className;
+    if (data is _i3.Password) {
+      return 'Password';
+    }
+    if (data is _i4.User) {
+      return 'User';
+    }
     className = _i2.Protocol().getClassNameForObject(data);
     if (className != null) {
       return 'serverpod.$className';
@@ -51,6 +73,12 @@ class Protocol extends _i1.SerializationManagerServer {
     var dataClassName = data['className'];
     if (dataClassName is! String) {
       return super.deserializeByClassName(data);
+    }
+    if (dataClassName == 'Password') {
+      return deserialize<_i3.Password>(data['data']);
+    }
+    if (dataClassName == 'User') {
+      return deserialize<_i4.User>(data['data']);
     }
     if (dataClassName.startsWith('serverpod.')) {
       data['className'] = dataClassName.substring(10);

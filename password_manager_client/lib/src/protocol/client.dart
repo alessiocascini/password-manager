@@ -10,7 +10,28 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
-import 'protocol.dart' as _i2;
+import 'dart:async' as _i2;
+import 'protocol.dart' as _i3;
+
+/// Generates a random password of the specified length.
+/// The password will contain at least one uppercase letter, one lowercase letter,
+/// one number, and one special character.
+/// {@category Endpoint}
+class EndpointPasswordGenerator extends _i1.EndpointRef {
+  EndpointPasswordGenerator(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'passwordGenerator';
+
+  /// [length]: The desired length of the generated password.
+  /// Returns a string containing the generated password.
+  _i2.Future<String> generatePassword(int length) =>
+      caller.callServerEndpoint<String>(
+        'passwordGenerator',
+        'generatePassword',
+        {'length': length},
+      );
+}
 
 class Client extends _i1.ServerpodClientShared {
   Client(
@@ -28,7 +49,7 @@ class Client extends _i1.ServerpodClientShared {
     bool? disconnectStreamsOnLostInternetConnection,
   }) : super(
           host,
-          _i2.Protocol(),
+          _i3.Protocol(),
           securityContext: securityContext,
           authenticationKeyManager: authenticationKeyManager,
           streamingConnectionTimeout: streamingConnectionTimeout,
@@ -37,10 +58,15 @@ class Client extends _i1.ServerpodClientShared {
           onSucceededCall: onSucceededCall,
           disconnectStreamsOnLostInternetConnection:
               disconnectStreamsOnLostInternetConnection,
-        ) {}
+        ) {
+    passwordGenerator = EndpointPasswordGenerator(this);
+  }
+
+  late final EndpointPasswordGenerator passwordGenerator;
 
   @override
-  Map<String, _i1.EndpointRef> get endpointRefLookup => {};
+  Map<String, _i1.EndpointRef> get endpointRefLookup =>
+      {'passwordGenerator': passwordGenerator};
 
   @override
   Map<String, _i1.ModuleEndpointCaller> get moduleLookup => {};
