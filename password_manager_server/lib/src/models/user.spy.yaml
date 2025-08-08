@@ -1,0 +1,5 @@
+class: User
+fields:
+  salt: String
+  master: String
+# passwords: List<Password>?, relation
