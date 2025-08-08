@@ -14,8 +14,8 @@ class PasswordGeneratorEndpoint extends Endpoint {
     '!"#\$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
   ];
 
-  /// Returns a string containing the generated password.
   /// [length]: The desired length of the generated password.
+  /// Returns a string containing the generated password.
   Future<String> generatePassword(
     Session session, {
     required final int length,
