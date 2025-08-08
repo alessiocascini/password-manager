@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0-dev.0] - Unreleased
+
+### Changed
+
+- Project converted to Serverpod.
+- Old project moved to `legacy` directory.
+
+### Notes
+
+- This is a development release and is not intended for production use.
+
 ## [1.1.0] - 2025-03-09
 
 ### Added
