@@ -23,9 +23,11 @@ class EndpointPasswordGenerator extends _i1.EndpointRef {
   @override
   String get name => 'passwordGenerator';
 
-  /// [length]: The desired length of the generated password.
+  /// Generates a password.
+  ///
+  /// [length]: Desired length of the generated password.
   /// Returns a string containing the generated password.
-  _i2.Future<String> generatePassword(int length) =>
+  _i2.Future<String> generatePassword({required int length}) =>
       caller.callServerEndpoint<String>(
         'passwordGenerator',
         'generatePassword',

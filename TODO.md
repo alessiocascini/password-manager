@@ -2,6 +2,8 @@
 
 ## Convert to Serverpod
 
+- Length must be between 8 and 128 characters.
+
 ## Libraries
 
 - encrypt: ^5.0.3

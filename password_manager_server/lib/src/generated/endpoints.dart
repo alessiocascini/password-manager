@@ -43,7 +43,7 @@ class Endpoints extends _i1.EndpointDispatch {
               (endpoints['passwordGenerator'] as _i2.PasswordGeneratorEndpoint)
                   .generatePassword(
             session,
-            params['length'],
+            length: params['length'],
           ),
         )
       },

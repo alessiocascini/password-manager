@@ -128,9 +128,9 @@ class _PasswordGeneratorEndpoint {
   final _i2.SerializationManager _serializationManager;
 
   _i3.Future<String> generatePassword(
-    _i1.TestSessionBuilder sessionBuilder,
-    int length,
-  ) async {
+    _i1.TestSessionBuilder sessionBuilder, {
+    required int length,
+  }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
           (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
