@@ -14,6 +14,15 @@ import 'dart:async' as _i2;
 import 'package:password_manager_client/src/protocol/char_set.dart' as _i3;
 import 'protocol.dart' as _i4;
 
+/// Endpoint that exposes password generation functionality.
+///
+/// The endpoint produces cryptographically secure random passwords based on
+/// the requested character sets and length. The generation uses
+/// [Random.secure] to draw randomness from a secure source when available.
+///
+/// Note: callers should ensure that `charSets` is not empty and that `length`
+/// is greater than zero. If these preconditions are not met, the method will
+/// throw an error (see [generatePassword] documentation below).
 /// {@category Endpoint}
 class EndpointPasswordGenerator extends _i1.EndpointRef {
   EndpointPasswordGenerator(_i1.EndpointCaller caller) : super(caller);
@@ -21,6 +30,30 @@ class EndpointPasswordGenerator extends _i1.EndpointRef {
   @override
   String get name => 'passwordGenerator';
 
+  /// Generates a random password.
+  ///
+  /// Parameters:
+  /// - [session]: Serverpod session/context for the request (passed
+  ///   automatically when called from the generated client).
+  /// - [length]: Desired length of the resulting password. Must be > 0.
+  /// - [charSets]: A non-empty set of [CharSet] values that specify which
+  ///   character groups should be included in the generation. The generator
+  ///   guarantees at least one character from each selected group will appear
+  ///   in the result when possible (i.e. when [length] is >= number of
+  ///   selected groups).
+  /// - [excludeAmbiguous]: If true, ambiguous characters (see
+  ///   [_ambiguousRegex]) are removed from the chosen character groups. This
+  ///   defaults to `true` because ambiguous characters are commonly omitted to
+  ///   improve readability.
+  ///
+  /// Returns: a randomly generated password as a [String].
+  ///
+  /// Throws:
+  /// - [ArgumentError] if [length] is not greater than zero.
+  /// - [RangeError] or [StateError] may occur indirectly if [charSets] is
+  ///   empty or if the pool of available characters becomes empty after
+  ///   applying [excludeAmbiguous]. Callers should ensure [charSets] is valid
+  ///   to avoid runtime errors.
   _i2.Future<String> generatePassword({
     required int length,
     required Set<_i3.CharSet> charSets,

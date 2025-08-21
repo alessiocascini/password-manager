@@ -1,3 +1,4 @@
+import 'package:password_manager_server/src/generated/protocol.dart';
 import 'package:test/test.dart';
 
 // Import the generated test helper file.
@@ -14,8 +15,12 @@ void main() {
       'when calling `generatePassword` with a length of 12, then it returns a password of that length',
       () async {
         // Calls the generatePassword endpoint with a length of 12 characters.
-        final password = await endpoints.passwordGenerator
-            .generatePassword(sessionBuilder, length: 12);
+        final password = await endpoints.passwordGenerator.generatePassword(
+          sessionBuilder,
+          length: 12,
+          charSets: {CharSet.uppercase, CharSet.lowercase, CharSet.numbers},
+          excludeAmbiguous: true,
+        );
 
         // Asserts that the returned password has the expected length.
         expect(password, hasLength(12));
