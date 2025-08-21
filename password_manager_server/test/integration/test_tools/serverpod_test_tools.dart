@@ -14,6 +14,7 @@
 import 'package:serverpod_test/serverpod_test.dart' as _i1;
 import 'package:serverpod/serverpod.dart' as _i2;
 import 'dart:async' as _i3;
+import 'package:password_manager_server/src/generated/char_set.dart' as _i4;
 import 'package:password_manager_server/src/generated/protocol.dart';
 import 'package:password_manager_server/src/generated/endpoints.dart';
 export 'package:serverpod_test/serverpod_test_public_exports.dart';
@@ -130,6 +131,8 @@ class _PasswordGeneratorEndpoint {
   _i3.Future<String> generatePassword(
     _i1.TestSessionBuilder sessionBuilder, {
     required int length,
+    required Set<_i4.CharSet> charSets,
+    required bool excludeAmbiguous,
   }) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -142,7 +145,11 @@ class _PasswordGeneratorEndpoint {
           createSessionCallback: (_) => _localUniqueSession,
           endpointPath: 'passwordGenerator',
           methodName: 'generatePassword',
-          parameters: _i1.testObjectToJson({'length': length}),
+          parameters: _i1.testObjectToJson({
+            'length': length,
+            'charSets': charSets,
+            'excludeAmbiguous': excludeAmbiguous,
+          }),
           serializationManager: _serializationManager,
         );
         var _localReturnValue = await (_localCallContext.method.call(

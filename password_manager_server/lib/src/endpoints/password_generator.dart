@@ -1,46 +1,40 @@
 import 'dart:math';
 
+import 'package:password_manager_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
-/// Generates a random password of the specified length.
-/// The password will contain at least one uppercase letter, one lowercase letter,
-/// one number, and one special character.
 class PasswordGeneratorEndpoint extends Endpoint {
-  // Character groups used to build the password.
-  static const List<String> characters = [
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-    'abcdefghijkmnpqrstuvwxyz', // Excludes 'l' and 'o' to avoid confusion.
-    '23456789', // Excludes '0' and '1' to avoid confusion.
-    '!"#\$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
-  ];
+  static const Map<CharSet, String> _sets = {
+    CharSet.uppercase: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    CharSet.lowercase: 'abcdefghijklmnopqrstuvwxyz',
+    CharSet.numbers: '0123456789',
+    CharSet.special: '!"#\$%&\'()*+,-./:;<=>?@[\\]^_`{|}~',
+  };
 
-  /// Generates a password.
-  ///
-  /// [length]: Desired length of the generated password.
-  /// Returns a string containing the generated password.
+  static final RegExp _ambiguousRegex = RegExp(r'[lo01]');
+
   Future<String> generatePassword(
     Session session, {
     required final int length,
+    required final Set<CharSet> charSets,
+    final bool excludeAmbiguous = true,
   }) async {
-    final Random random = Random.secure();
-    final List<String> password = [];
-
-    // Helper that returns a random character from the provided character set.
-    String getRandomCharacter(String characters) =>
-        characters[random.nextInt(characters.length)];
-
-    // Ensure at least one character from each category is present.
-    for (final String charSet in characters) {
-      password.add(getRandomCharacter(charSet));
+    if (length <= 0) {
+      throw ArgumentError.value(length, 'length', 'Length must be > 0');
     }
 
-    // Fill the remaining length with characters chosen from all categories.
-    for (int i = password.length; i < length; i++) {
-      password.add(getRandomCharacter(characters.join('')));
-    }
+    final List<String> groups = charSets.map((cs) {
+      final String group = _sets[cs]!;
+      return excludeAmbiguous ? group.replaceAll(_ambiguousRegex, '') : group;
+    }).toList();
 
-    // Shuffle to avoid predictable ordering, then return as a single string.
-    password.shuffle(random);
-    return password.join('');
+    final Random rng = Random.secure();
+    final List<String> passwordChars = List.generate(length, (final int i) {
+      final String pool = i < groups.length ? groups[i] : groups.join('');
+      return pool[rng.nextInt(pool.length)];
+    });
+
+    passwordChars.shuffle(rng);
+    return passwordChars.join('');
   }
 }

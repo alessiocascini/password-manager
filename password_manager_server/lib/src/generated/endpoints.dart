@@ -11,6 +11,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 import '../endpoints/password_generator.dart' as _i2;
+import 'package:password_manager_server/src/generated/char_set.dart' as _i3;
 
 class Endpoints extends _i1.EndpointDispatch {
   @override
@@ -34,7 +35,17 @@ class Endpoints extends _i1.EndpointDispatch {
               name: 'length',
               type: _i1.getType<int>(),
               nullable: false,
-            )
+            ),
+            'charSets': _i1.ParameterDescription(
+              name: 'charSets',
+              type: _i1.getType<Set<_i3.CharSet>>(),
+              nullable: false,
+            ),
+            'excludeAmbiguous': _i1.ParameterDescription(
+              name: 'excludeAmbiguous',
+              type: _i1.getType<bool>(),
+              nullable: false,
+            ),
           },
           call: (
             _i1.Session session,
@@ -44,6 +55,8 @@ class Endpoints extends _i1.EndpointDispatch {
                   .generatePassword(
             session,
             length: params['length'],
+            charSets: params['charSets'],
+            excludeAmbiguous: params['excludeAmbiguous'],
           ),
         )
       },

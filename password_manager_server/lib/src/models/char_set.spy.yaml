@@ -1,0 +1,6 @@
+enum: CharSet
+values:
+  - uppercase
+  - lowercase
+  - numbers
+  - special

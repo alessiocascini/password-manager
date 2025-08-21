@@ -11,11 +11,9 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import 'dart:async' as _i2;
-import 'protocol.dart' as _i3;
+import 'package:password_manager_client/src/protocol/char_set.dart' as _i3;
+import 'protocol.dart' as _i4;
 
-/// Generates a random password of the specified length.
-/// The password will contain at least one uppercase letter, one lowercase letter,
-/// one number, and one special character.
 /// {@category Endpoint}
 class EndpointPasswordGenerator extends _i1.EndpointRef {
   EndpointPasswordGenerator(_i1.EndpointCaller caller) : super(caller);
@@ -23,15 +21,19 @@ class EndpointPasswordGenerator extends _i1.EndpointRef {
   @override
   String get name => 'passwordGenerator';
 
-  /// Generates a password.
-  ///
-  /// [length]: Desired length of the generated password.
-  /// Returns a string containing the generated password.
-  _i2.Future<String> generatePassword({required int length}) =>
+  _i2.Future<String> generatePassword({
+    required int length,
+    required Set<_i3.CharSet> charSets,
+    required bool excludeAmbiguous,
+  }) =>
       caller.callServerEndpoint<String>(
         'passwordGenerator',
         'generatePassword',
-        {'length': length},
+        {
+          'length': length,
+          'charSets': charSets,
+          'excludeAmbiguous': excludeAmbiguous,
+        },
       );
 }
 
@@ -51,7 +53,7 @@ class Client extends _i1.ServerpodClientShared {
     bool? disconnectStreamsOnLostInternetConnection,
   }) : super(
           host,
-          _i3.Protocol(),
+          _i4.Protocol(),
           securityContext: securityContext,
           authenticationKeyManager: authenticationKeyManager,
           streamingConnectionTimeout: streamingConnectionTimeout,
