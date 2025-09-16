@@ -13,12 +13,14 @@ import 'package:serverpod_client/serverpod_client.dart' as _i1;
 
 abstract class Password implements _i1.SerializableModel {
   Password._({
+    this.id,
     required this.service,
     required this.iv,
     required this.password,
   });
 
   factory Password({
+    int? id,
     required String service,
     required String iv,
     required String password,
@@ -26,11 +28,17 @@ abstract class Password implements _i1.SerializableModel {
 
   factory Password.fromJson(Map<String, dynamic> jsonSerialization) {
     return Password(
+      id: jsonSerialization['id'] as int?,
       service: jsonSerialization['service'] as String,
       iv: jsonSerialization['iv'] as String,
       password: jsonSerialization['password'] as String,
     );
   }
+
+  /// The database id, set if the object has been inserted into the
+  /// database or if it has been fetched from the database. Otherwise,
+  /// the id will be null.
+  int? id;
 
   String service;
 
@@ -42,6 +50,7 @@ abstract class Password implements _i1.SerializableModel {
   /// with some or all fields replaced by the given arguments.
   @_i1.useResult
   Password copyWith({
+    int? id,
     String? service,
     String? iv,
     String? password,
@@ -49,6 +58,7 @@ abstract class Password implements _i1.SerializableModel {
   @override
   Map<String, dynamic> toJson() {
     return {
+      if (id != null) 'id': id,
       'service': service,
       'iv': iv,
       'password': password,
@@ -61,12 +71,16 @@ abstract class Password implements _i1.SerializableModel {
   }
 }
 
+class _Undefined {}
+
 class _PasswordImpl extends Password {
   _PasswordImpl({
+    int? id,
     required String service,
     required String iv,
     required String password,
   }) : super._(
+          id: id,
           service: service,
           iv: iv,
           password: password,
@@ -77,11 +91,13 @@ class _PasswordImpl extends Password {
   @_i1.useResult
   @override
   Password copyWith({
+    Object? id = _Undefined,
     String? service,
     String? iv,
     String? password,
   }) {
     return Password(
+      id: id is int? ? id : this.id,
       service: service ?? this.service,
       iv: iv ?? this.iv,
       password: password ?? this.password,

@@ -50,6 +50,11 @@ class Protocol extends _i1.SerializationManager {
     if (t == _i1.getType<_i4.User?>()) {
       return (data != null ? _i4.User.fromJson(data) : null) as T;
     }
+    if (t == _i1.getType<List<_i3.Password>?>()) {
+      return (data != null
+          ? (data as List).map((e) => deserialize<_i3.Password>(e)).toList()
+          : null) as T;
+    }
     if (t == Set<_i5.CharSet>) {
       return (data as List).map((e) => deserialize<_i5.CharSet>(e)).toSet()
           as T;

@@ -1,0 +1,142 @@
+{
+  "moduleName": "password_manager",
+  "tables": [
+    {
+      "name": "password",
+      "dartName": "Password",
+      "module": "password_manager",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('password_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "service",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "iv",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "password",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "_userPasswordsUserId",
+          "columnType": 6,
+          "isNullable": true,
+          "dartType": "int?"
+        }
+      ],
+      "foreignKeys": [
+        {
+          "constraintName": "password_fk_0",
+          "columns": [
+            "_userPasswordsUserId"
+          ],
+          "referenceTable": "user",
+          "referenceTableSchema": "public",
+          "referenceColumns": [
+            "id"
+          ],
+          "onUpdate": 3,
+          "onDelete": 3
+        }
+      ],
+      "indexes": [
+        {
+          "indexName": "password_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        }
+      ],
+      "managed": true
+    },
+    {
+      "name": "user",
+      "dartName": "User",
+      "module": "password_manager",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "columnType": 6,
+          "isNullable": false,
+          "columnDefault": "nextval('user_id_seq'::regclass)",
+          "dartType": "int?"
+        },
+        {
+          "name": "username",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "salt",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        },
+        {
+          "name": "master",
+          "columnType": 0,
+          "isNullable": false,
+          "dartType": "String"
+        }
+      ],
+      "foreignKeys": [],
+      "indexes": [
+        {
+          "indexName": "user_pkey",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "id"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": true
+        },
+        {
+          "indexName": "user_username_unique_idx",
+          "elements": [
+            {
+              "type": 0,
+              "definition": "username"
+            }
+          ],
+          "type": "btree",
+          "isUnique": true,
+          "isPrimary": false
+        }
+      ],
+      "managed": true
+    }
+  ],
+  "installedModules": [
+    {
+      "module": "serverpod",
+      "version": "20240516151843329"
+    }
+  ],
+  "migrationApiVersion": 1
+}

@@ -27,7 +27,137 @@ class Protocol extends _i1.SerializationManagerServer {
   static final Protocol _instance = Protocol._();
 
   static final List<_i2.TableDefinition> targetTableDefinitions = [
-    ..._i2.Protocol.targetTableDefinitions
+    _i2.TableDefinition(
+      name: 'password',
+      dartName: 'Password',
+      schema: 'public',
+      module: 'password_manager',
+      columns: [
+        _i2.ColumnDefinition(
+          name: 'id',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'nextval(\'password_id_seq\'::regclass)',
+        ),
+        _i2.ColumnDefinition(
+          name: 'service',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _i2.ColumnDefinition(
+          name: 'iv',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _i2.ColumnDefinition(
+          name: 'password',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _i2.ColumnDefinition(
+          name: '_userPasswordsUserId',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+      ],
+      foreignKeys: [
+        _i2.ForeignKeyDefinition(
+          constraintName: 'password_fk_0',
+          columns: ['_userPasswordsUserId'],
+          referenceTable: 'user',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.noAction,
+          matchType: null,
+        )
+      ],
+      indexes: [
+        _i2.IndexDefinition(
+          indexName: 'password_pkey',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'id',
+            )
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: true,
+        )
+      ],
+      managed: true,
+    ),
+    _i2.TableDefinition(
+      name: 'user',
+      dartName: 'User',
+      schema: 'public',
+      module: 'password_manager',
+      columns: [
+        _i2.ColumnDefinition(
+          name: 'id',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'nextval(\'user_id_seq\'::regclass)',
+        ),
+        _i2.ColumnDefinition(
+          name: 'username',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _i2.ColumnDefinition(
+          name: 'salt',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _i2.ColumnDefinition(
+          name: 'master',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+      ],
+      foreignKeys: [],
+      indexes: [
+        _i2.IndexDefinition(
+          indexName: 'user_pkey',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'id',
+            )
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: true,
+        ),
+        _i2.IndexDefinition(
+          indexName: 'user_username_unique_idx',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'username',
+            )
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
+    ..._i2.Protocol.targetTableDefinitions,
   ];
 
   @override
@@ -53,6 +183,11 @@ class Protocol extends _i1.SerializationManagerServer {
     }
     if (t == _i1.getType<_i5.User?>()) {
       return (data != null ? _i5.User.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<List<_i4.Password>?>()) {
+      return (data != null
+          ? (data as List).map((e) => deserialize<_i4.Password>(e)).toList()
+          : null) as T;
     }
     if (t == Set<_i6.CharSet>) {
       return (data as List).map((e) => deserialize<_i6.CharSet>(e)).toSet()
@@ -113,6 +248,12 @@ class Protocol extends _i1.SerializationManagerServer {
       if (table != null) {
         return table;
       }
+    }
+    switch (t) {
+      case _i4.Password:
+        return _i4.Password.t;
+      case _i5.User:
+        return _i5.User.t;
     }
     return null;
   }

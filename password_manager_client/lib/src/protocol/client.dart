@@ -12,7 +12,8 @@
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import 'dart:async' as _i2;
 import 'package:password_manager_client/src/protocol/char_set.dart' as _i3;
-import 'protocol.dart' as _i4;
+import 'package:password_manager_client/src/protocol/user.dart' as _i4;
+import 'protocol.dart' as _i5;
 
 /// Endpoint that exposes password generation functionality.
 ///
@@ -70,6 +71,40 @@ class EndpointPasswordGenerator extends _i1.EndpointRef {
       );
 }
 
+/// {@category Endpoint}
+class EndpointUser extends _i1.EndpointRef {
+  EndpointUser(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'user';
+
+  _i2.Future<_i4.User> register({
+    required String username,
+    required String password,
+  }) =>
+      caller.callServerEndpoint<_i4.User>(
+        'user',
+        'register',
+        {
+          'username': username,
+          'password': password,
+        },
+      );
+
+  _i2.Future<_i4.User> login({
+    required String username,
+    required String password,
+  }) =>
+      caller.callServerEndpoint<_i4.User>(
+        'user',
+        'login',
+        {
+          'username': username,
+          'password': password,
+        },
+      );
+}
+
 class Client extends _i1.ServerpodClientShared {
   Client(
     String host, {
@@ -86,7 +121,7 @@ class Client extends _i1.ServerpodClientShared {
     bool? disconnectStreamsOnLostInternetConnection,
   }) : super(
           host,
-          _i4.Protocol(),
+          _i5.Protocol(),
           securityContext: securityContext,
           authenticationKeyManager: authenticationKeyManager,
           streamingConnectionTimeout: streamingConnectionTimeout,
@@ -97,13 +132,18 @@ class Client extends _i1.ServerpodClientShared {
               disconnectStreamsOnLostInternetConnection,
         ) {
     passwordGenerator = EndpointPasswordGenerator(this);
+    user = EndpointUser(this);
   }
 
   late final EndpointPasswordGenerator passwordGenerator;
 
+  late final EndpointUser user;
+
   @override
-  Map<String, _i1.EndpointRef> get endpointRefLookup =>
-      {'passwordGenerator': passwordGenerator};
+  Map<String, _i1.EndpointRef> get endpointRefLookup => {
+        'passwordGenerator': passwordGenerator,
+        'user': user,
+      };
 
   @override
   Map<String, _i1.ModuleEndpointCaller> get moduleLookup => {};

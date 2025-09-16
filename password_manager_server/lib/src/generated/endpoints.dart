@@ -10,8 +10,9 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
-import '../endpoints/password_generator.dart' as _i2;
-import 'package:password_manager_server/src/generated/char_set.dart' as _i3;
+import '../endpoints/password_generator_endpoint.dart' as _i2;
+import '../endpoints/user_endpoint.dart' as _i3;
+import 'package:password_manager_server/src/generated/char_set.dart' as _i4;
 
 class Endpoints extends _i1.EndpointDispatch {
   @override
@@ -22,7 +23,13 @@ class Endpoints extends _i1.EndpointDispatch {
           server,
           'passwordGenerator',
           null,
-        )
+        ),
+      'user': _i3.UserEndpoint()
+        ..initialize(
+          server,
+          'user',
+          null,
+        ),
     };
     connectors['passwordGenerator'] = _i1.EndpointConnector(
       name: 'passwordGenerator',
@@ -38,7 +45,7 @@ class Endpoints extends _i1.EndpointDispatch {
             ),
             'charSets': _i1.ParameterDescription(
               name: 'charSets',
-              type: _i1.getType<Set<_i3.CharSet>>(),
+              type: _i1.getType<Set<_i4.CharSet>>(),
               nullable: false,
             ),
             'excludeAmbiguous': _i1.ParameterDescription(
@@ -59,6 +66,60 @@ class Endpoints extends _i1.EndpointDispatch {
             excludeAmbiguous: params['excludeAmbiguous'],
           ),
         )
+      },
+    );
+    connectors['user'] = _i1.EndpointConnector(
+      name: 'user',
+      endpoint: endpoints['user']!,
+      methodConnectors: {
+        'register': _i1.MethodConnector(
+          name: 'register',
+          params: {
+            'username': _i1.ParameterDescription(
+              name: 'username',
+              type: _i1.getType<String>(),
+              nullable: false,
+            ),
+            'password': _i1.ParameterDescription(
+              name: 'password',
+              type: _i1.getType<String>(),
+              nullable: false,
+            ),
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['user'] as _i3.UserEndpoint).register(
+            session,
+            username: params['username'],
+            password: params['password'],
+          ),
+        ),
+        'login': _i1.MethodConnector(
+          name: 'login',
+          params: {
+            'username': _i1.ParameterDescription(
+              name: 'username',
+              type: _i1.getType<String>(),
+              nullable: false,
+            ),
+            'password': _i1.ParameterDescription(
+              name: 'password',
+              type: _i1.getType<String>(),
+              nullable: false,
+            ),
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['user'] as _i3.UserEndpoint).login(
+            session,
+            username: params['username'],
+            password: params['password'],
+          ),
+        ),
       },
     );
   }

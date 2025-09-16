@@ -1,2 +1,5 @@
 passwordGenerator:
   - generatePassword:
+user:
+  - register:
+  - login:
