@@ -13,8 +13,3 @@
 ### User
 
 - Improve error handling to provide more specific feedback on login failures (e.g., user not found, incorrect password).
-
-## Libraries
-
-- encrypt: ^5.0.3
-- pointycastle: ^3.9.1
