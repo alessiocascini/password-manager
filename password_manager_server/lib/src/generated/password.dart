@@ -15,23 +15,23 @@ abstract class Password
     implements _i1.TableRow<int?>, _i1.ProtocolSerialization {
   Password._({
     this.id,
-    required this.service,
     required this.iv,
+    required this.service,
     required this.password,
   }) : _userPasswordsUserId = null;
 
   factory Password({
     int? id,
-    required String service,
     required String iv,
+    required String service,
     required String password,
   }) = _PasswordImpl;
 
   factory Password.fromJson(Map<String, dynamic> jsonSerialization) {
     return PasswordImplicit._(
       id: jsonSerialization['id'] as int?,
-      service: jsonSerialization['service'] as String,
       iv: jsonSerialization['iv'] as String,
+      service: jsonSerialization['service'] as String,
       password: jsonSerialization['password'] as String,
       $_userPasswordsUserId: jsonSerialization['_userPasswordsUserId'] as int?,
     );
@@ -44,9 +44,9 @@ abstract class Password
   @override
   int? id;
 
-  String service;
-
   String iv;
+
+  String service;
 
   String password;
 
@@ -60,16 +60,16 @@ abstract class Password
   @_i1.useResult
   Password copyWith({
     int? id,
-    String? service,
     String? iv,
+    String? service,
     String? password,
   });
   @override
   Map<String, dynamic> toJson() {
     return {
       if (id != null) 'id': id,
-      'service': service,
       'iv': iv,
+      'service': service,
       'password': password,
       if (_userPasswordsUserId != null)
         '_userPasswordsUserId': _userPasswordsUserId,
@@ -80,8 +80,8 @@ abstract class Password
   Map<String, dynamic> toJsonForProtocol() {
     return {
       if (id != null) 'id': id,
-      'service': service,
       'iv': iv,
+      'service': service,
       'password': password,
     };
   }
@@ -121,13 +121,13 @@ class _Undefined {}
 class _PasswordImpl extends Password {
   _PasswordImpl({
     int? id,
-    required String service,
     required String iv,
+    required String service,
     required String password,
   }) : super._(
           id: id,
-          service: service,
           iv: iv,
+          service: service,
           password: password,
         );
 
@@ -137,14 +137,14 @@ class _PasswordImpl extends Password {
   @override
   Password copyWith({
     Object? id = _Undefined,
-    String? service,
     String? iv,
+    String? service,
     String? password,
   }) {
     return PasswordImplicit._(
       id: id is int? ? id : this.id,
-      service: service ?? this.service,
       iv: iv ?? this.iv,
+      service: service ?? this.service,
       password: password ?? this.password,
       $_userPasswordsUserId: this._userPasswordsUserId,
     );
@@ -154,15 +154,15 @@ class _PasswordImpl extends Password {
 class PasswordImplicit extends _PasswordImpl {
   PasswordImplicit._({
     int? id,
-    required String service,
     required String iv,
+    required String service,
     required String password,
     int? $_userPasswordsUserId,
   })  : _userPasswordsUserId = $_userPasswordsUserId,
         super(
           id: id,
-          service: service,
           iv: iv,
+          service: service,
           password: password,
         );
 
@@ -172,8 +172,8 @@ class PasswordImplicit extends _PasswordImpl {
   }) {
     return PasswordImplicit._(
       id: password.id,
-      service: password.service,
       iv: password.iv,
+      service: password.service,
       password: password.password,
       $_userPasswordsUserId: $_userPasswordsUserId,
     );
@@ -185,12 +185,12 @@ class PasswordImplicit extends _PasswordImpl {
 
 class PasswordTable extends _i1.Table<int?> {
   PasswordTable({super.tableRelation}) : super(tableName: 'password') {
-    service = _i1.ColumnString(
-      'service',
-      this,
-    );
     iv = _i1.ColumnString(
       'iv',
+      this,
+    );
+    service = _i1.ColumnString(
+      'service',
       this,
     );
     password = _i1.ColumnString(
@@ -203,9 +203,9 @@ class PasswordTable extends _i1.Table<int?> {
     );
   }
 
-  late final _i1.ColumnString service;
-
   late final _i1.ColumnString iv;
+
+  late final _i1.ColumnString service;
 
   late final _i1.ColumnString password;
 
@@ -214,8 +214,8 @@ class PasswordTable extends _i1.Table<int?> {
   @override
   List<_i1.Column> get columns => [
         id,
-        service,
         iv,
+        service,
         password,
         $_userPasswordsUserId,
       ];
@@ -223,8 +223,8 @@ class PasswordTable extends _i1.Table<int?> {
   @override
   List<_i1.Column> get managedColumns => [
         id,
-        service,
         iv,
+        service,
         password,
       ];
 }

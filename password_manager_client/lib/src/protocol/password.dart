@@ -14,23 +14,23 @@ import 'package:serverpod_client/serverpod_client.dart' as _i1;
 abstract class Password implements _i1.SerializableModel {
   Password._({
     this.id,
-    required this.service,
     required this.iv,
+    required this.service,
     required this.password,
   });
 
   factory Password({
     int? id,
-    required String service,
     required String iv,
+    required String service,
     required String password,
   }) = _PasswordImpl;
 
   factory Password.fromJson(Map<String, dynamic> jsonSerialization) {
     return Password(
       id: jsonSerialization['id'] as int?,
-      service: jsonSerialization['service'] as String,
       iv: jsonSerialization['iv'] as String,
+      service: jsonSerialization['service'] as String,
       password: jsonSerialization['password'] as String,
     );
   }
@@ -40,9 +40,9 @@ abstract class Password implements _i1.SerializableModel {
   /// the id will be null.
   int? id;
 
-  String service;
-
   String iv;
+
+  String service;
 
   String password;
 
@@ -51,16 +51,16 @@ abstract class Password implements _i1.SerializableModel {
   @_i1.useResult
   Password copyWith({
     int? id,
-    String? service,
     String? iv,
+    String? service,
     String? password,
   });
   @override
   Map<String, dynamic> toJson() {
     return {
       if (id != null) 'id': id,
-      'service': service,
       'iv': iv,
+      'service': service,
       'password': password,
     };
   }
@@ -76,13 +76,13 @@ class _Undefined {}
 class _PasswordImpl extends Password {
   _PasswordImpl({
     int? id,
-    required String service,
     required String iv,
+    required String service,
     required String password,
   }) : super._(
           id: id,
-          service: service,
           iv: iv,
+          service: service,
           password: password,
         );
 
@@ -92,14 +92,14 @@ class _PasswordImpl extends Password {
   @override
   Password copyWith({
     Object? id = _Undefined,
-    String? service,
     String? iv,
+    String? service,
     String? password,
   }) {
     return Password(
       id: id is int? ? id : this.id,
-      service: service ?? this.service,
       iv: iv ?? this.iv,
+      service: service ?? this.service,
       password: password ?? this.password,
     );
   }

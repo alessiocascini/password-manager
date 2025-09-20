@@ -41,13 +41,13 @@ class Protocol extends _i1.SerializationManagerServer {
           columnDefault: 'nextval(\'password_id_seq\'::regclass)',
         ),
         _i2.ColumnDefinition(
-          name: 'service',
+          name: 'iv',
           columnType: _i2.ColumnType.text,
           isNullable: false,
           dartType: 'String',
         ),
         _i2.ColumnDefinition(
-          name: 'iv',
+          name: 'service',
           columnType: _i2.ColumnType.text,
           isNullable: false,
           dartType: 'String',

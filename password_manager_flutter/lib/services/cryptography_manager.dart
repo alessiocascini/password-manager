@@ -4,6 +4,44 @@ import 'dart:typed_data';
 import 'package:encrypt/encrypt.dart';
 import 'package:pointycastle/export.dart';
 
+class CryptographyManager {
+  final Encrypter _encrypter;
+
+  CryptographyManager(final Uint8List salt, final String plain)
+      : _encrypter =
+            Encrypter(AES(Key(_derivateKey(salt, plain)), mode: AESMode.cbc));
+
+  static Uint8List _derivateKey(final Uint8List salt, final String plain) {
+    if (salt.length < 16) throw ArgumentError('Invalid salt.');
+
+    final PBKDF2KeyDerivator pbkdf2 =
+        PBKDF2KeyDerivator(HMac(SHA256Digest(), 64))
+          ..init(Pbkdf2Parameters(salt, 100000, 32));
+
+    return pbkdf2.process(utf8.encode(plain));
+  }
+
+  Map<String, String> encrypt(final String data) {
+    final IV iv = IV.fromSecureRandom(16);
+    final Encrypted encrypted = _encrypter.encrypt(data, iv: iv);
+
+    return {'iv': iv.base64, 'data': encrypted.base64};
+  }
+
+  String decrypt(final Map<String, dynamic> data) {
+    if (!data.containsKey('iv') || !data.containsKey('data')) {
+      throw ArgumentError('Invalid data.');
+    }
+
+    final IV iv = IV.fromBase64(data['iv']);
+    final Encrypted encrypted = Encrypted.fromBase64(data['data']);
+
+    return _encrypter.decrypt(encrypted, iv: iv);
+  }
+}
+
+// OLD
+
 /// A manager class for cryptographic operations such as encryption and decryption.
 /// It derives a symmetric key using PBKDF2 and uses AES in CBC mode for the operations.
 class CryptographyManager {
