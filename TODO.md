@@ -10,7 +10,7 @@
 - Increase the salt length to at least 16 bytes for better security.
 - Make the hashing function asynchronous to avoid blocking the main thread.
 
-### Login
+### User
 
 - Improve error handling to provide more specific feedback on login failures (e.g., user not found, incorrect password).
 
