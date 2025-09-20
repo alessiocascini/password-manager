@@ -13,3 +13,7 @@
 ### User
 
 - Improve error handling to provide more specific feedback on login failures (e.g., user not found, incorrect password).
+
+## General Upgrades
+
+- Switch to cryptography package for all cryptographic operations for better security and maintenance.
