@@ -2,9 +2,9 @@ name: Format
 
 on:
   push:
-    branches: [main]
+    branches: [main, chore/serverpod]
   pull_request:
-    branches: [main]
+    branches: [main, chore/serverpod]
 
 jobs:
   format:
@@ -22,4 +22,5 @@ jobs:
         run: dart pub get
 
       - name: Check formatting
+        working-directory: password_manager_server
         run: dart format --set-exit-if-changed .

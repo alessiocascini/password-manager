@@ -2,24 +2,24 @@ name: Tests
 
 on:
   push:
-    branches: [main]
+    branches: [main, chore/serverpod]
   pull_request:
-    branches: [main]
+    branches: [main, chore/serverpod]
 
 jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      VERSION: '3.0.0'
-      SERVERPOD_PASSWORD_database: '3Cswj5_ZYO8FS8fjMSL4lEP2Wnwye-HX'
-      SERVERPOD_PASSWORD_redis: 'wOw_0UnyU6_cIY0pdkIoslVQw2T1cuXW'
+      VERSION: "3.0.0"
+      SERVERPOD_PASSWORD_database: "3Cswj5_ZYO8FS8fjMSL4lEP2Wnwye-HX"
+      SERVERPOD_PASSWORD_redis: "wOw_0UnyU6_cIY0pdkIoslVQw2T1cuXW"
 
     steps:
       - uses: actions/checkout@v4
 
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.32.8'
+          flutter-version: "3.32.8"
 
       - name: Start containers
         working-directory: password_manager_server
